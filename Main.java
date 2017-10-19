@@ -21,6 +21,13 @@ public class Main{
 		try{
 			//utiliza a primeira String de args como arquivo
 			asm = args[0];
+			//variável para armazenar o tamanho do nome do arquivo
+			int len = asm.length();
+			//caso o arquivo não esteja no formato .asm, imprime uma mensagem de erro e encerra o programa
+			if(asm.charAt(len - 1) != 'm' || asm.charAt(len - 2) != 's' || asm.charAt(len - 3) != 'a' || asm.charAt(len - 4) != '.'){
+				System.out.println("O arquivo informado não é do formato .asm");
+				return;
+			}
 			//tenta ler o arquivo informado
 			//caso falhe, exibe uma mensagem de erro e encerra o programa
 			try{
