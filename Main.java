@@ -37,7 +37,7 @@ public class Main{
 				//caso falhe, exibe uma mensagem de erro
 				try{
 					while(br.ready())
-						instrucoes.add(br.readLine());
+						instrucoes.add(br.readLine().trim());
 					
 					br.close();
 				}catch(IOException e){
