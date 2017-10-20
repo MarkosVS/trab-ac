@@ -43,6 +43,27 @@ public class Main{
 				}catch(IOException e){
 					System.out.println("Não foi possível ler o arquivo");
 				}
+				//len passa a ser o tamanho da lista de instruções
+				len = instrucoes.size();
+				//remove coisas desnecessárias
+				for(int i = 0; i < len; i++){
+					//remove linhas nulas
+					if(instrucoes.get(i).equals("")){
+						instrucoes.remove(instrucoes.get(i));
+						i--;
+						len = instrucoes.size();
+					}
+					//remove linhas de comentários
+					else if(instrucoes.get(i).charAt(0) == '#'){
+						instrucoes.remove(instrucoes.get(i));
+						i--;
+						len = instrucoes.size();
+					}
+				}
+
+				//teste
+				for(String s : instrucoes)
+					System.out.println(s);
 			}catch(FileNotFoundException e){
 				System.out.println("Arquivo não encontrado");
 			}
