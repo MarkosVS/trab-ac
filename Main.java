@@ -59,6 +59,13 @@ public class Main{
 						i--;
 						len = instrucoes.size();
 					}
+					//remove comentarios
+					else if(instrucoes.get(i).contains("#")){
+						int index = instrucoes.get(i).indexOf('#');
+						String s = instrucoes.get(i).substring(0, index);
+						instrucoes.remove(instrucoes.get(i));
+						instrucoes.add(i, s);
+					}
 				}
 
 				//teste
