@@ -14,6 +14,8 @@ public class Main{
 	public static void main(String[] args){
 		//lista de instruções
 		LinkedList<Instrucao> instrucoes = new LinkedList<Instrucao>();
+		//lista de dados
+		LinkedList<Dado> dados = new LinkedList<Dado>();
 		//nome do arquivo
 		String asm;
 		//tenta utilizar o arquivo passado por parametro
