@@ -47,25 +47,19 @@ public class Main{
 				len = instrucoes.size();
 				//remove coisas desnecessárias
 				for(int i = 0; i < len; i++){
-					//remove linhas nulas
-					if(instrucoes.get(i).equals("")){
-						instrucoes.remove(instrucoes.get(i));
-						i--;
-						len = instrucoes.size();
-					}
-					//remove linhas de comentários
-					else if(instrucoes.get(i).charAt(0) == '#'){
-						instrucoes.remove(instrucoes.get(i));
-						i--;
-						len = instrucoes.size();
-					}
 					//remove comentarios
-					else if(instrucoes.get(i).contains("#")){
+					if(instrucoes.get(i).contains("#")){
 						int index = instrucoes.get(i).indexOf('#');
 						String s = instrucoes.get(i).substring(0, index);
 						instrucoes.remove(instrucoes.get(i));
 						instrucoes.add(i, s);
 					}
+					//remove linhas nulas
+					if(instrucoes.get(i).equals("")){
+						instrucoes.remove(instrucoes.get(i));
+						i--;
+						len = instrucoes.size();
+					}					
 				}
 
 				//teste
