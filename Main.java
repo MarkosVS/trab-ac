@@ -13,7 +13,7 @@ public class Main{
 	//metodo main
 	public static void main(String[] args){
 		//lista de instruções
-		LinkedList<String> instrucoes = new LinkedList<String>();
+		LinkedList<Instrucao> instrucoes = new LinkedList<Instrucao>();
 		//nome do arquivo
 		String asm;
 		//tenta utilizar o arquivo passado por parametro
@@ -37,7 +37,7 @@ public class Main{
 				//caso falhe, exibe uma mensagem de erro
 				try{
 					while(br.ready())
-						instrucoes.add(br.readLine().trim());
+						instrucoes.add(new Instrucao(br.readLine().trim()));
 					
 					br.close();
 				}catch(IOException e){
@@ -48,14 +48,14 @@ public class Main{
 				//remove coisas desnecessárias
 				for(int i = 0; i < len; i++){
 					//remove comentarios
-					if(instrucoes.get(i).contains("#")){
-						int index = instrucoes.get(i).indexOf('#');
-						String s = instrucoes.get(i).substring(0, index);
+					if(instrucoes.get(i).getInstrucao().contains("#")){
+						int index = instrucoes.get(i).getInstrucao().indexOf('#');
+						String s = instrucoes.get(i).getInstrucao().substring(0, index);
 						instrucoes.remove(instrucoes.get(i));
-						instrucoes.add(i, s);
+						instrucoes.add(i, new Instrucao(s));
 					}
 					//remove linhas nulas
-					if(instrucoes.get(i).equals("")){
+					if(instrucoes.get(i).getInstrucao().equals("")){
 						instrucoes.remove(instrucoes.get(i));
 						i--;
 						len = instrucoes.size();
@@ -63,8 +63,8 @@ public class Main{
 				}
 
 				//teste
-				for(String s : instrucoes)
-					System.out.println(s);
+				for(Instrucao i : instrucoes)
+					System.out.println(i.getInstrucao());
 			}catch(FileNotFoundException e){
 				System.out.println("Arquivo não encontrado");
 			}
