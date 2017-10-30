@@ -50,14 +50,14 @@ public class Assembler{
 				//remove coisas desnecessárias
 				for(int i = 0; i < len; i++){
 					//remove comentarios
-					if(instrucoes.get(i).getInstrucao().contains("#")){
-						int index = instrucoes.get(i).getInstrucao().indexOf('#');
-						String s = instrucoes.get(i).getInstrucao().substring(0, index);
+					if(instrucoes.get(i).getTexto().contains("#")){
+						int index = instrucoes.get(i).getTexto().indexOf('#');
+						String s = instrucoes.get(i).getTexto().substring(0, index);
 						instrucoes.remove(instrucoes.get(i));
 						instrucoes.add(i, new Instrucao(s));
 					}
 					//remove linhas nulas
-					if(instrucoes.get(i).getInstrucao().equals("")){
+					if(instrucoes.get(i).getTexto().equals("")){
 						instrucoes.remove(instrucoes.get(i));
 						i--;
 						len = instrucoes.size();
@@ -66,7 +66,7 @@ public class Assembler{
 
 				//teste
 				for(Instrucao i : instrucoes)
-					System.out.println(i.getInstrucao());
+					System.out.println(i.getTexto());
 			}catch(FileNotFoundException e){
 				System.out.println("Arquivo não encontrado");
 			}

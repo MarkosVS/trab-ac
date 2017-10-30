@@ -8,17 +8,17 @@ public class Instrucao{
 	//atributos
 	private String label;
 	private char tipo;
-	private String instrucao;
+	private String texto;
 
 	//construtores
 	public Instrucao(String inst){
-		this.instrucao = inst;
+		this.texto = inst;
 		this.label = "";
 		this.tipo = '0';
 	}
 
 	public Instrucao(String inst, String lbl){
-		this.instrucao = inst;
+		this.texto = inst;
 		this.label = lbl;
 		this.tipo = '0';
 	}
@@ -32,8 +32,8 @@ public class Instrucao{
 		return this.tipo;
 	}
 
-	public String getInstrucao(){
-		return this.instrucao;
+	public String getTexto(){
+		return this.texto;
 	}
 
 	//setters
