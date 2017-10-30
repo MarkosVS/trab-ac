@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 
-public class Main{
+public class Assembler{
 	//metodo main
 	public static void main(String[] args){
 		//lista de instruções

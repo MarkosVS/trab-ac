@@ -11,7 +11,7 @@ public class Dado{
 	private Object conteudo;
 
 	//construtor
-	public Instrucao(Object cont, String lbl, String tipo){
+	public Dado(Object cont, String lbl, String tipo){
 		this.conteudo = cont;
 		this.label = lbl;
 		this.tipo = tipo;
@@ -27,6 +27,6 @@ public class Dado{
 	}
 
 	public Object getConteudo(){
-		return this.instrucao;
+		return this.conteudo;
 	}
 }
