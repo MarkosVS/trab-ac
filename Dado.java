@@ -8,13 +8,19 @@ public class Dado{
 	//atributos
 	private String label;
 	private String tipo;
-	private Object conteudo;
+	private String conteudo;
 
-	//construtor
-	public Dado(Object cont, String lbl, String tipo){
+	//construtores
+	public Dado(String cont, String lbl, String tipo){
 		this.conteudo = cont;
 		this.label = lbl;
 		this.tipo = tipo;
+	}
+
+	public Dado(String cont){
+		this.conteudo = cont;
+		this.label = "[sem label]";
+		this.tipo = "[sem tipo]";
 	}
 
 	//getters
@@ -26,7 +32,7 @@ public class Dado{
 		return this.tipo;
 	}
 
-	public Object getConteudo(){
+	public String getConteudo(){
 		return this.conteudo;
 	}
 }
