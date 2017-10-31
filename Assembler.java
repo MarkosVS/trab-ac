@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.LinkedList;
 
 public class Assembler{
@@ -60,26 +61,32 @@ public class Assembler{
 									dados.add(new Dado(linha));
 							}
 						}
-						/*else if(inst){
-							instrucoes.add(new Instrucao(linha));
-						}else{
-							dados.add(new Dado(linha));
-						}*/
 					}
-					
+					//fechar o buffer para ler o arquivo
 					br.close();
 				}catch(IOException e){
 					System.out.println("Não foi possível ler o arquivo");
 				}
-
+				//tenta escrever o arquivo executavel
+				//caso não consiga, gera uma mensagem de erro e encerra o programa
+				//PS: por enquanto gera um txt
+				//objeto PrintStream para escrever o arquivo
+				PrintStream ps = new PrintStream("arquivo.txt");
 				//teste instruções
 				System.out.println("Instruções:");
-				for(Instrucao i : instrucoes)
+				ps.println("Instruções:");
+				for(Instrucao i : instrucoes){
+					ps.println(i.getTexto());
 					System.out.println(i.getTexto());
+				}
 				//teste dados
 				System.out.println("Dados:");
-				for(Dado d : dados)
+				ps.println("Dados:");
+				for(Dado d : dados){
+					ps.println(d.getConteudo());
 					System.out.println(d.getConteudo());
+				}
+				
 			}catch(FileNotFoundException e){
 				System.out.println("Arquivo não encontrado");
 			}
