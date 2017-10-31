@@ -46,51 +46,30 @@ public class Assembler{
 							inst = true;
 						else if(linha.equals(".data"))
 							inst = false;
-						else if(inst)
+						else{
+							//remove comentarios
+							if(linha.contains("#")){
+								int index = linha.indexOf('#');
+								linha = linha.substring(0, index);
+							}
+							//caso a linha não seja nula, insere na lista correspondente
+							if(!linha.equals("")){
+								if(inst)
+									instrucoes.add(new Instrucao(linha));
+								else
+									dados.add(new Dado(linha));
+							}
+						}
+						/*else if(inst){
 							instrucoes.add(new Instrucao(linha));
-						else
+						}else{
 							dados.add(new Dado(linha));
+						}*/
 					}
 					
 					br.close();
 				}catch(IOException e){
 					System.out.println("Não foi possível ler o arquivo");
-				}
-				//variavel para armazenar o tamanho da lista de instruções
-				int len = instrucoes.size();
-				//remove coisas desnecessárias da lista de instrucoes
-				for(int i = 0; i < len; i++){
-					//remove comentarios
-					if(instrucoes.get(i).getTexto().contains("#")){
-						int index = instrucoes.get(i).getTexto().indexOf('#');
-						String s = instrucoes.get(i).getTexto().substring(0, index);
-						instrucoes.remove(instrucoes.get(i));
-						instrucoes.add(i, new Instrucao(s));
-					}
-					//remove linhas nulas
-					if(instrucoes.get(i).getTexto().equals("")){
-						instrucoes.remove(instrucoes.get(i));
-						i--;
-						len = instrucoes.size();
-					}					
-				}
-				//len passa a ser o tamanho da lista de dados
-				len = dados.size();
-				//remove coisas desnecessárias da lista de dados
-				for(int i = 0; i < len; i++){
-					//remove comentarios
-					if(dados.get(i).getConteudo().contains("#")){
-						int index = dados.get(i).getConteudo().indexOf('#');
-						String s = dados.get(i).getConteudo().substring(0, index);
-						dados.remove(dados.get(i));
-						dados.add(i, new Dado(s));
-					}
-					//remove linhas nulas
-					if(dados.get(i).getConteudo().equals("")){
-						dados.remove(dados.get(i));
-						i--;
-						len = dados.size();
-					}					
 				}
 
 				//teste instruções
