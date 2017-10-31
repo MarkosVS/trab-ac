@@ -67,11 +67,20 @@ public class Assembler{
 				}catch(IOException e){
 					System.out.println("Não foi possível ler o arquivo");
 				}
-				//tenta escrever o arquivo executavel
-				//caso não consiga, gera uma mensagem de erro e encerra o programa
+				//escreve o arquivo executavel
 				//PS: por enquanto gera um txt
+				//variavel que guarda o nome do arquivo saída
+				String nomeSaida;
+				//tenta usar o nome passado como parametro
+				//caso não consiga, utiliza o msm nome do arquivo
+				try{
+					nomeSaida = args[1];
+				}catch(ArrayIndexOutOfBoundsException e){
+					nomeSaida = asm.substring(0, asm.indexOf('.'));
+				}
+				nomeSaida += ".txt";
 				//objeto PrintStream para escrever o arquivo
-				PrintStream ps = new PrintStream("arquivo.txt");
+				PrintStream ps = new PrintStream(nomeSaida);
 				//teste instruções
 				System.out.println("Instruções:");
 				ps.println("Instruções:");
