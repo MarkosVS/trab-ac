@@ -11,6 +11,12 @@ import java.io.PrintStream;
 import java.util.LinkedList;
 
 public class Assembler{
+	//vetores de instruções válidas (um pra cada tipo de instrução)
+	static String[] instTipoR = {"add", "addu", "and", "jr", "nor", "or", "slt", "sltu", "sll", "srl", "sub", 
+		"subu"}; 
+	static String[] instTipoI = {"addi", "addiu", "andi", "beq", "bne", "lbu", "lhu", "lui", "lw", "ori", "slti",
+		"sltiu", "sb", "sh", "sw"};
+	static String[] instTipoJ = {"j", "jal"}; 
 	//metodo main
 	public static void main(String[] args){
 		//lista de instruções
