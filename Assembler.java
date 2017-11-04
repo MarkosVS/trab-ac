@@ -11,18 +11,14 @@ import java.io.PrintStream;
 import java.util.LinkedList;
 
 public class Assembler{
-	//vetores de instruções válidas (um pra cada tipo de instrução)
-	static String[] instTipoR = {"add", "addu", "and", "jr", "nor", "or", "slt", "sltu", "sll", "srl", "sub", 
-		"subu"}; 
-	static String[] instTipoI = {"addi", "addiu", "andi", "beq", "bne", "lbu", "lhu", "lui", "lw", "ori", "slti",
-		"sltiu", "sb", "sh", "sw"};
-	static String[] instTipoJ = {"j", "jal"}; 
 	//metodo main
 	public static void main(String[] args){
 		//lista de instruções
 		LinkedList<Instrucao> instrucoes = new LinkedList<Instrucao>();
 		//lista de dados
 		LinkedList<Dado> dados = new LinkedList<Dado>();
+		//validador
+		Validador valid = new Validador();
 		//nome do arquivo
 		String asm;
 		//tenta utilizar o arquivo passado por parametro
@@ -45,9 +41,18 @@ public class Assembler{
 				try{
 					//flag que controla se a linha será interpretada como instrução ou dado
 					boolean inst = true;
+					//variavel que conta a linha atual
+					int numLinha = 0;
 					while(br.ready()){
+						//incrementa o contador de linha
+						numLinha++;
 						//string que salva a linha lida (sem espaços adicionais)
 						String linha = br.readLine().trim();
+						//remover espaços internos
+						while(linha.contains("  "))
+							linha = linha.replaceAll("  ", " ");
+						//remover tabulação
+						linha = linha.replaceAll("	", " ");
 						//interpreta a linha e adiciona na lista correspontente
 						if(linha.equals(".text"))
 							inst = true;
@@ -61,8 +66,18 @@ public class Assembler{
 							}
 							//caso a linha não seja nula, insere na lista correspondente
 							if(!linha.equals("")){
-								if(inst)
-									instrucoes.add(new Instrucao(linha));
+								if(inst){
+									//checa se é uma instrução válida
+									//se for, adiciona na lista
+									//se não for, gera uma mensagem de erro e encerra o programa
+									if(valid.eValida(linha))
+										instrucoes.add(new Instrucao(linha));
+									else{
+										System.out.println("Instrucao inválida encontrada na linha " + numLinha);
+										System.out.println(linha);
+										return;
+									}
+								}
 								else
 									dados.add(new Dado(linha));
 							}
