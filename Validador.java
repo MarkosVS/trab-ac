@@ -41,9 +41,14 @@ public class Validador{
 		r1 = instrucao.split(" ")[1];
 		r1 = r1.substring(0, r1.indexOf(','));
 
-		for(String s : instTipoR)
+		for(String s : instTipoR){
+			//caso seja uma instrução que tenta salvar em $zero, retorna false
+			if(!s.equals("jr") && (r1.equals("$zero") || r1.equals("0")))
+				return false;
+
 			if(inst.equals(s))
 				return true;
+		}
 
 		for(String s : instTipoI)
 			if(inst.equals(s))
