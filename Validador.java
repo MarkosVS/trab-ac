@@ -24,12 +24,22 @@ public class Validador{
 		//pega apenas a primeira palavra da instrucao
 		String inst = instrucao.split(" ")[0];
 
+		//checa se é uma chamada ao sistema
+		if(inst.equals("syscall"))
+			return true;
+
+		//variaveis para guardar os registradores
+		String r1, r2, r3;
 		//um loop pra cada array de tipos de instrução
 		//retorna verdadeiro caso a instrução seja reconhecida
 		//e falso caso não
 		for(String s : instTipoJ)
 			if(inst.equals(s))
 				return true;
+
+		//identifica o 1º registrador e armazena
+		r1 = instrucao.split(" ")[1];
+		r1 = r1.substring(0, r1.indexOf(','));
 
 		for(String s : instTipoR)
 			if(inst.equals(s))
@@ -42,10 +52,6 @@ public class Validador{
 		for(String s : pseudoInst)
 			if(inst.equals(s))
 				return true;
-
-		//checa se é uma chamada ao sistema
-		if(inst.equals("syscall"))
-			return true;
 			
 		//retorna falso caso não seja valida
 		return false;
