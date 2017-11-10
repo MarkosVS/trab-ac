@@ -81,16 +81,36 @@ public class Validador{
 		r1 = r1.substring(0, r1.indexOf(','));
 		reg1 = getNumReg(r1);
 		//se o registrador 1 não existir, retorna falso
-		if(!existeReg(r1))
+		if(!existeReg(reg1))
 			return false;
 
 		for(String s : instTipoR){
-			//caso seja uma instrução que tenta salvar em registradores reservados, retorna false
-			if(!s.equals("jr") && !regAlteravel(reg1))
-				return false;
+			if(inst.equals(s)){
+				//verifica se a intrução é um jr
+				//se sim, retorna true se foi passado um registrador válido e false se não
+				if(s.equals("jr"))
+					return existeReg(reg1);
+				else{
+					//caso o r1 não seja alterável, retorna false
+					if(!regAlteravel(reg1))
+						return false;
+					//identifica o 2º registrador e armazena
+					//caso seja um registrador inexistente, retorna false
+					r2 = instrucao.split(" ")[2];
+					r2 = r2.substring(0, r2.indexOf(','));
+					reg2 = getNumReg(r2);
+					if(!existeReg(reg2))
+						return false;
+					//identifica o 3º registrador e armazena
+					//caso seja um registrador inexistente, retorna false
+					r3 = instrucao.split(" ")[3];
+					reg3 = getNumReg(r3);
+					if(!existeReg(reg3))
+						return false;
 
-			if(inst.equals(s))
+				}
 				return true;
+			}
 		}
 
 		for(String s : instTipoI)
