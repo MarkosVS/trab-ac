@@ -11,16 +11,55 @@ import java.io.PrintStream;
 import java.util.LinkedList;
 
 public class Assembler{
+	//lista de instruções
+	static LinkedList<Instrucao> instrucoes = new LinkedList<Instrucao>();
+	//lista de dados
+	static LinkedList<Dado> dados = new LinkedList<Dado>();
+	//validador
+	static Validador valid = new Validador();
+	//nome do arquivo
+	static String asm;
+
+	//metodo que gera saida
+	static void gerarArquivo(String nomeSaida) throws FileNotFoundException{
+		PrintStream ps = new PrintStream(nomeSaida);
+		//teste instruções
+		System.out.println("Instruções:");
+		ps.println("Instruções:");
+		for(Instrucao i : instrucoes){
+			ps.println(i.getTexto());
+			System.out.println(i.getTexto());
+		}
+		//teste dados
+		System.out.println("Dados:");
+		ps.println("Dados:");
+		for(Dado d : dados){
+			ps.println(d.getConteudo());
+			System.out.println(d.getConteudo());
+		}
+	}
+
+	//metodo que remove espaços e tabulações
+	static String removeEspacos(String str){
+		str = str.trim();
+		str = str.replaceAll("\t", " ");
+		while(str.contains("  "))
+			str = str.replaceAll("  ", " ");
+		return str;
+
+	}
+
+	//metodo que remove comentarios
+	static String removeComentarios(String str){
+		if(str.contains("#")){
+			int index = str.indexOf('#');
+			str = str.substring(0, index);
+		}
+		return str;
+	}
+
 	//metodo main
 	public static void main(String[] args){
-		//lista de instruções
-		LinkedList<Instrucao> instrucoes = new LinkedList<Instrucao>();
-		//lista de dados
-		LinkedList<Dado> dados = new LinkedList<Dado>();
-		//validador
-		Validador valid = new Validador();
-		//nome do arquivo
-		String asm;
 		//tenta utilizar o arquivo passado por parametro
 		//caso falhe, exibe uma mensagem de erro e encerra o programa
 		try{
@@ -46,13 +85,10 @@ public class Assembler{
 					while(br.ready()){
 						//incrementa o contador de linha
 						numLinha++;
-						//string que salva a linha lida (sem espaços adicionais)
-						String linha = br.readLine().trim();
-						//remover espaços internos
-						while(linha.contains("  "))
-							linha = linha.replaceAll("  ", " ");
-						//remover tabulação
-						linha = linha.replaceAll("	", " ");
+						//string que salva a linha lida
+						String linha = br.readLine();
+						//remover espaços
+						linha = removeEspacos(linha);
 						//interpreta a linha e adiciona na lista correspontente
 						if(linha.equals(".text"))
 							inst = true;
@@ -60,10 +96,7 @@ public class Assembler{
 							inst = false;
 						else{
 							//remove comentarios
-							if(linha.contains("#")){
-								int index = linha.indexOf('#');
-								linha = linha.substring(0, index);
-							}
+							linha = removeComentarios(linha);
 							//caso a linha não seja nula, insere na lista correspondente
 							if(!linha.equals("")){
 								if(inst){
@@ -91,31 +124,10 @@ public class Assembler{
 				//escreve o arquivo executavel
 				//PS: por enquanto gera um txt
 				//variavel que guarda o nome do arquivo saída
-				String nomeSaida;
-				//tenta usar o nome passado como parametro
-				//caso não consiga, utiliza o msm nome do arquivo
-				try{
-					nomeSaida = args[1];
-				}catch(ArrayIndexOutOfBoundsException e){
-					nomeSaida = asm.substring(0, asm.indexOf('.'));
-				}
+				String nomeSaida = asm.substring(0, asm.indexOf('.'));
 				nomeSaida += ".txt";
-				//objeto PrintStream para escrever o arquivo
-				PrintStream ps = new PrintStream(nomeSaida);
-				//teste instruções
-				System.out.println("Instruções:");
-				ps.println("Instruções:");
-				for(Instrucao i : instrucoes){
-					ps.println(i.getTexto());
-					System.out.println(i.getTexto());
-				}
-				//teste dados
-				System.out.println("Dados:");
-				ps.println("Dados:");
-				for(Dado d : dados){
-					ps.println(d.getConteudo());
-					System.out.println(d.getConteudo());
-				}
+				//chama metodo que gera o arquivo
+				gerarArquivo(nomeSaida);
 				
 			}catch(FileNotFoundException e){
 				System.out.println("Arquivo não encontrado");
