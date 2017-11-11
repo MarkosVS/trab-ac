@@ -87,10 +87,12 @@ public class Validador{
 		for(String s : instTipoR){
 			if(inst.equals(s)){
 				//verifica se a intrução é um jr
-				//se sim, retorna true se foi passado um registrador válido e false se não
+				//se sim, retorna true se foi passado um unico parametro (válido) e false se não
 				if(s.equals("jr")){
 					return existeReg(reg1) && instrucao.split(" ").length == 2 && instrucao.endsWith(r1);
 				}else{
+					if(instrucao.split(" ").length != 4)
+						return false;
 					//caso o r1 não seja alterável, retorna false
 					if(!regAlteravel(reg1))
 						return false;
