@@ -126,9 +126,49 @@ public class Validador{
 			}
 		}
 
-		for(String s : instTipoI)
-			if(inst.equals(s))
+		for(int i = 0; i < instTipoI.length; i++){
+			String s = instTipoI[i];
+			if(inst.equals(s)){
+				//variavel para armazenar o imediato
+				int imm;
+				//checa se é um load / store
+				if(i >= 8){
+					//retorna false caso haja palavras a mais / a menos
+					if(instrucao.split(" ").length != 3)
+						return false;
+				}else{
+					//retorna false caso haja palavras a mais / a menos
+					if(instrucao.split(" ").length != 4)
+						return false;
+					//identifica o reg2 e armazena (se for válido)
+					r2 = instrucao.split(" ")[2];
+					if(r2.contains(","))
+						r2 = r2.substring(0, r2.indexOf(','));
+					else
+						return false;
+					reg2 = getNumReg(r2);
+					//se o registrador não existir, retorna false
+					if(!existeReg(r2))
+						return false;
+					//checa se é um bne/beq
+					if(i < 2){
+						//
+					}else{
+						//retorna false se não for possível escrever no reg 1
+						if(!regAlteravel(r1))
+							return false;
+						//tenta pegar o valor do imediato
+						//retorna false caso não consiga
+						try{
+							imm = Integer.parseInt(instrucao.split(" ")[3]);
+						}catch(NumberFormatException e){
+							return false;
+						}
+					}
+				}
 				return true;
+			}
+		}
 
 		for(String s : pseudoInst)
 			if(inst.equals(s))
