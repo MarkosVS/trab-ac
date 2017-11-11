@@ -2,15 +2,15 @@
 *	@author Marcos Vinicius Sombra
 */
 
-
+	
 //classe validador
 public class Validador{
 	//atributos
 	final String[] instTipoR = {"add", "addu", "and", "jr", "nor", "or", "slt", "sltu", "sll", "srl", "sub", 
 		"subu"}; 
 
-	final String[] instTipoI = {"addi", "addiu", "andi", "beq", "bne", "lbu", "lhu", "lui", "lw", "ori", "slti",
-		"sltiu", "sb", "sh", "sw"};
+	final String[] instTipoI = {"beq", "bne", "addi", "addiu", "andi", "ori", "slti", "sltiu", "lbu", "lhu",
+		"lui", "lw", "sb", "sh", "sw"};
 	
 	final String[] instTipoJ = {"j", "jal"};
 	
@@ -70,15 +70,23 @@ public class Validador{
 		String r1, r2, r3;
 		int reg1, reg2, reg3;
 		//um loop pra cada array de tipos de instrução
-		//retorna verdadeiro caso a instrução seja reconhecida
-		//e falso caso não
+		//retorna true caso a instrução seja reconhecida e sintaticamente válida
+		//e false caso não
 		for(String s : instTipoJ)
-			if(inst.equals(s))
+			if(inst.equals(s)){
+				if(instrucao.split(" ").length != 2)
+					return false;
 				return true;
+			}
 
 		//identifica o 1º registrador e armazena
 		r1 = instrucao.split(" ")[1];
-		r1 = r1.substring(0, r1.indexOf(','));
+		if(r1.contains(","))
+			r1 = r1.substring(0, r1.indexOf(','));
+		else
+			if(!inst.equals("jr"))
+				return false;
+		
 		reg1 = getNumReg(r1);
 		//se o registrador 1 não existir, retorna falso
 		if(!existeReg(reg1))
@@ -99,7 +107,10 @@ public class Validador{
 					//identifica o 2º registrador e armazena
 					//caso seja um registrador inexistente, retorna false
 					r2 = instrucao.split(" ")[2];
-					r2 = r2.substring(0, r2.indexOf(','));
+					if(r2.contains(","))
+						r2 = r2.substring(0, r2.indexOf(','));
+					else
+						return false;
 					reg2 = getNumReg(r2);
 					if(!existeReg(reg2))
 						return false;

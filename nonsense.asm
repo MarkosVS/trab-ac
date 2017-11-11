@@ -1,2 +1,3 @@
-add $t0, $zero, $zero oi
-jr $zero, $zero
+add 	$t0, 	$zero, 	$zero
+j 		LOOP
+jr 		$zero
