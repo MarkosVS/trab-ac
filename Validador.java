@@ -129,13 +129,47 @@ public class Validador{
 		for(int i = 0; i < instTipoI.length; i++){
 			String s = instTipoI[i];
 			if(inst.equals(s)){
-				//variavel para armazenar o imediato
+				//variaveis para armazenar o imediato
 				int imm;
+				String imediato;
 				//checa se é um load / store
 				if(i >= 8){
 					//retorna false caso haja palavras a mais / a menos
 					if(instrucao.split(" ").length != 3)
 						return false;
+					//retorna false se for um load e tentar escrever em um registrador inválido
+					if(i < 12 && !regAlteravel(reg1))
+						return false;
+					//seta temporariamente imm como o indice do primeiro (
+					imm = instrucao.split(" ")[2].indexOf('(');
+					//se não houver um (, retorna false
+					if(imm <= 0)
+						return false;
+
+					//identifica o 2º registrador e armazena
+					//caso seja um registrador inexistente, retorna false
+					r2 = instrucao.split(" ")[2];
+					if(r2.contains(")"))
+						r2 = r2.substring(imm + 1, r2.indexOf(')'));
+					else
+						return false;
+					reg2 = getNumReg(r2);
+					if(!existeReg(reg2))
+						return false;
+
+					//tenta pegar o valor do imediato
+					//retorna false caso não consiga	
+					try{
+						imediato = instrucao.split(" ")[2].substring(0, imm);
+						imm = Integer.parseInt(imediato);
+					}catch(NumberFormatException e){
+						return false;
+					}
+
+					//se houver caracteres a mais, retorna false
+					if(2 + r2.length() + imediato.length() != instrucao.split(" ")[2].length())
+						return false;
+
 				}else{
 					//retorna false caso haja palavras a mais / a menos
 					if(instrucao.split(" ").length != 4)
