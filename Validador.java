@@ -59,8 +59,10 @@ public class Validador{
 		//checa se possui label e caso sim, ignora
 		if(instrucao.contains(":"))
 			instrucao = instrucao.substring(instrucao.indexOf(":") + 2);
+		//array de strings com cada parte da instrução
+		String[] instSplit = instrucao.split(" ");
 		//pega apenas a primeira palavra da instrucao
-		String inst = instrucao.split(" ")[0];
+		String inst = instSplit[0];
 
 		//checa se é uma chamada ao sistema
 		if(inst.equals("syscall"))
@@ -74,13 +76,13 @@ public class Validador{
 		//e false caso não
 		for(String s : instTipoJ)
 			if(inst.equals(s)){
-				if(instrucao.split(" ").length != 2)
+				if(instSplit.length != 2)
 					return false;
 				return true;
 			}
 
 		//identifica o 1º registrador e armazena
-		r1 = instrucao.split(" ")[1];
+		r1 = instSplit[1];
 		if(r1.contains(","))
 			r1 = r1.substring(0, r1.indexOf(','));
 		else
@@ -97,16 +99,16 @@ public class Validador{
 				//verifica se a intrução é um jr
 				//se sim, retorna true se foi passado um unico parametro (válido) e false se não
 				if(s.equals("jr")){
-					return existeReg(reg1) && instrucao.split(" ").length == 2 && instrucao.endsWith(r1);
+					return existeReg(reg1) && instSplit.length == 2 && instrucao.endsWith(r1);
 				}else{
-					if(instrucao.split(" ").length != 4)
+					if(instSplit.length != 4)
 						return false;
 					//caso o r1 não seja alterável, retorna false
 					if(!regAlteravel(reg1))
 						return false;
 					//identifica o 2º registrador e armazena
 					//caso seja um registrador inexistente, retorna false
-					r2 = instrucao.split(" ")[2];
+					r2 = instSplit[2];
 					if(r2.contains(","))
 						r2 = r2.substring(0, r2.indexOf(','));
 					else
@@ -116,7 +118,7 @@ public class Validador{
 						return false;
 					//identifica o 3º registrador e armazena
 					//caso seja um registrador inexistente, retorna false
-					r3 = instrucao.split(" ")[3];
+					r3 = instSplit[3];
 					reg3 = getNumReg(r3);
 					if(!existeReg(reg3))
 						return false;
@@ -135,20 +137,20 @@ public class Validador{
 				//checa se é um load / store
 				if(i >= 8){
 					//retorna false caso haja palavras a mais / a menos
-					if(instrucao.split(" ").length != 3)
+					if(instSplit.length != 3)
 						return false;
 					//retorna false se for um load e tentar escrever em um registrador inválido
 					if(i < 12 && !regAlteravel(reg1))
 						return false;
 					//seta temporariamente imm como o indice do primeiro (
-					imm = instrucao.split(" ")[2].indexOf('(');
+					imm = instSplit[2].indexOf('(');
 					//se não houver um (, retorna false
 					if(imm <= 0)
 						return false;
 
 					//identifica o 2º registrador e armazena
 					//caso seja um registrador inexistente, retorna false
-					r2 = instrucao.split(" ")[2];
+					r2 = instSplit[2];
 					if(r2.contains(")"))
 						r2 = r2.substring(imm + 1, r2.indexOf(')'));
 					else
@@ -160,22 +162,22 @@ public class Validador{
 					//tenta pegar o valor do imediato
 					//retorna false caso não consiga	
 					try{
-						imediato = instrucao.split(" ")[2].substring(0, imm);
+						imediato = instSplit[2].substring(0, imm);
 						imm = Integer.parseInt(imediato);
 					}catch(NumberFormatException e){
 						return false;
 					}
 
 					//se houver caracteres a mais, retorna false
-					if(2 + r2.length() + imediato.length() != instrucao.split(" ")[2].length())
+					if(2 + r2.length() + imediato.length() != instSplit[2].length())
 						return false;
 
 				}else{
 					//retorna false caso haja palavras a mais / a menos
-					if(instrucao.split(" ").length != 4)
+					if(instSplit.length != 4)
 						return false;
 					//identifica o reg2 e armazena (se for válido)
-					r2 = instrucao.split(" ")[2];
+					r2 = instSplit[2];
 					if(r2.contains(","))
 						r2 = r2.substring(0, r2.indexOf(','));
 					else
@@ -194,7 +196,7 @@ public class Validador{
 						//tenta pegar o valor do imediato
 						//retorna false caso não consiga
 						try{
-							imm = Integer.parseInt(instrucao.split(" ")[3]);
+							imm = Integer.parseInt(instSplit[3]);
 						}catch(NumberFormatException e){
 							return false;
 						}
