@@ -3,6 +3,7 @@
 */
 
 //imports
+import java.io.FileOutputStream;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
@@ -23,6 +24,7 @@ public class Assembler{
 	//metodo que gera saida
 	static void gerarArquivo(String nomeSaida) throws FileNotFoundException{
 		PrintStream ps = new PrintStream(nomeSaida);
+		FileOutputStream out = new FileOutputStream("saida.txt");
 		//teste instruções
 		System.out.println("Instruções:");
 		ps.println("Instruções:");
