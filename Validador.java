@@ -24,7 +24,22 @@ public class Validador{
 		"14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "$27", "28", "29", "30",
 		"31"};
 
+	final String[] tiposDado = {".data", ".text", ".word", ".ascii", ".asciiz", ".byte", ".align", ".half",
+		".space", ".double", ".float", ".extern", ".kdata", ".ktext", ".globl", ".set", ".eqv", ".macro", 
+		".end_macro", ".include"};
+
 	//métodos
+	//checa se a label é válida
+	public boolean labelValida(String lbl){
+		Character c;
+		for(int i = 0; i < lbl.length(); i++){
+			c = lbl.charAt(i);
+			if(!Character.isLetter(c))
+				return false;
+		}
+
+		return true;
+	}
 	//retorna o valor numerico do registrador
 	public int getNumReg(String reg){
 		for(int i = 0; i < 32; i++)
@@ -55,7 +70,7 @@ public class Validador{
 	}
 
 	//valida a instrução
-	public boolean eValida(String instrucao){
+	public boolean instValida(String instrucao){
 		//checa se possui label e caso sim, ignora
 		if(instrucao.contains(":"))
 			instrucao = instrucao.substring(instrucao.indexOf(":") + 2);
@@ -77,6 +92,8 @@ public class Validador{
 		for(String s : instTipoJ)
 			if(inst.equals(s)){
 				if(instSplit.length != 2)
+					return false;
+				if(!labelValida(instSplit[1]))
 					return false;
 				return true;
 			}
@@ -212,5 +229,33 @@ public class Validador{
 			
 		//retorna falso caso não seja valida
 		return false;
+	}
+
+	//valida dado
+	public boolean dadoValido(String dado){
+		//array com cada palavra separada
+		String[] dadoSplit = dado.split(" ");
+		//retorna false caso haja palavras a mais / a menos
+		if(dadoSplit.length != 3)
+			return false;
+		//variavel para armazenar a label e outra para o tamanho
+		String label = dadoSplit[0];
+		int len = label.length();
+
+		//retorna false se o ultimo caractere não for um ':'
+		if(label.charAt(len - 1) != ':')
+			return false;
+		//checa se há pontuação no nome da label
+		//se sim, retorna false
+		if(!labelValida(label.substring(0, len - 1)))
+			return false;
+
+		//variavel para armazenar o tipo
+		String tipo = dadoSplit[1];
+		for(String s : tiposDado){
+			if(s.equals(tipo))
+		}
+		//retorna true caso seja valida
+		return true;
 	}
 }

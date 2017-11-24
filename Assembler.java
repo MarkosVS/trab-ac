@@ -105,16 +105,25 @@ public class Assembler{
 									//checa se é uma instrução válida
 									//se for, adiciona na lista
 									//se não for, gera uma mensagem de erro e encerra o programa
-									if(valid.eValida(linha))
+									if(valid.instValida(linha))
 										instrucoes.add(new Instrucao(linha));
 									else{
 										System.out.println("Instrucao inválida encontrada na linha " + numLinha);
 										System.out.println(linha);
 										return;
 									}
+								}else{
+									//checa se é um dado válido
+									//se for, adiciona na lista
+									//se não for, gera uma mensagem de erro e encerra o programa
+									if(valid.dadoValido(linha))
+										dados.add(new Dado(linha));
+									else{
+										System.out.println("Dado inválido encontrado na linha " + numLinha);
+										System.out.println(linha);
+										return;
+									}
 								}
-								else
-									dados.add(new Dado(linha));
 							}
 						}
 					}
