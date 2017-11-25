@@ -24,9 +24,7 @@ public class Validador{
 		"14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "$27", "28", "29", "30",
 		"31"};
 
-	final String[] tiposDado = {".data", ".text", ".word", ".ascii", ".asciiz", ".byte", ".align", ".half",
-		".space", ".double", ".float", ".extern", ".kdata", ".ktext", ".globl", ".set", ".eqv", ".macro", 
-		".end_macro", ".include"};
+	final String[] tiposDado = {".asciiz", ".ascii", ".word", ".half", ".byte", ".double", ".float"};
 
 	//métodos
 	//checa se a label é válida
@@ -252,10 +250,42 @@ public class Validador{
 
 		//variavel para armazenar o tipo
 		String tipo = dadoSplit[1];
-		for(String s : tiposDado){
-			if(s.equals(tipo))
+		for(int i = 0; i < tiposDado.length; i++){
+			String s = tiposDado[i];
+			if(s.equals(tipo)){
+				//variavel para armazenar o dado propriamente dito
+				String info = dadoSplit[2];
+				if(i < 2){
+					//
+				}else if(i < 5){
+					//variavel que armazena o valor numerico do dado
+					int num;
+					//tenta pegar o valor do dado
+					//retorna false caso não consiga
+					try{
+						num = Integer.parseInt(info);
+					}catch(NumberFormatException e){
+						return false;
+					}
+				}else{
+					//variavel que armazena o valor numerico do dado
+					double num;
+					//tenta pegar o valor do dado
+					//retorna false caso não consiga
+					try{
+						num = Double.parseDouble(info);
+					}catch(NumberFormatException e){
+						return false;
+					}catch(NullPointerException e){
+						return false;
+					}
+				}
+
+				//retorna true caso seja válido
+				return true;
+			}
 		}
-		//retorna true caso seja valida
-		return true;
+		//retorna false caso seja de um tipo invalido
+		return false;
 	}
 }

@@ -1,8 +1,8 @@
 .data
-ags: dga   sdgadsg
-ad: sga   sdg
-adg: asd   gas
-dgas: dga   da
+ags: .ascii   sdgadsg
+ad: .double   3.14159
+adg: .asciiz   gas
+dgas: .word   57
 .text
 add 	$t0, 	$zero, 	$zero
 addi	$s0,	$t0, 	20
