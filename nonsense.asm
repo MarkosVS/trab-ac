@@ -1,7 +1,7 @@
 .data
-ags: .ascii   sdgadsg
+ags: .ascii   "sd"
 ad: .double   3.14159
-adg: .asciiz   gas
+adg: .asciiz   "gas"
 dgas: .word   57
 .text
 add 	$t0, 	$zero, 	$zero

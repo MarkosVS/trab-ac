@@ -256,7 +256,22 @@ public class Validador{
 				//variavel para armazenar o dado propriamente dito
 				String info = dadoSplit[2];
 				if(i < 2){
-					//
+					//len passa a ser o tamanho do dado
+					len = info.length();
+					//se houver menos de dois caracteres no dado, retorna false
+					if(len < 2)
+						return false;
+					//variavel que guarda o indice da primeira aspa
+					int quote01 = info.indexOf('"');
+					//caso o primeiro caractere não seja uma aspa, retorna false
+					if(quote01 != 0)
+						return false;
+
+					//variavel que guarda o indice da segunda aspa
+					int quote02 = info.substring(quote01 + 1).indexOf('"');
+					//caso a segunda aspa não seja o ultimo caractere, retorna false
+					if(quote02 != len - 2)
+						return false;
 				}else if(i < 5){
 					//variavel que armazena o valor numerico do dado
 					int num;
