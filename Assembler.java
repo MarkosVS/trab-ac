@@ -105,8 +105,11 @@ public class Assembler{
 									//checa se é uma instrução válida
 									//se for, adiciona na lista
 									//se não for, gera uma mensagem de erro e encerra o programa
-									if(valid.instValida(linha))
-										instrucoes.add(new Instrucao(linha));
+									if(valid.instValida(linha)){
+										Instrucao i = new Instrucao(linha);
+										i.corrigirInstrucao();
+										instrucoes.add(i);
+									}
 									else{
 										System.out.println("Instrucao inválida encontrada na linha " + numLinha);
 										System.out.println(linha);
@@ -131,6 +134,13 @@ public class Assembler{
 					br.close();
 				}catch(IOException e){
 					System.out.println("Não foi possível ler o arquivo");
+				}
+
+				//buscar erros de labels
+				//caso encontre, exibe mensagem de erro e encerra o programa
+				if(!valid.verificarLabels(instrucoes, dados)){
+					System.out.println("Label inválida encontrada");
+					return;
 				}
 				//escreve o arquivo executavel
 				//PS: por enquanto gera um txt

@@ -37,7 +37,21 @@ public class Instrucao{
 	}
 
 	//setters
-	public void setLabel(String lbl){
+	private void setLabel(String lbl){
 		this.label = lbl;
+	}
+
+	private void setTexto(String txt){
+		this.texto = txt;
+	}
+
+	//metodos
+	public void corrigirInstrucao(){
+		//checa se possui label
+		//se sim, separa a label e o texto
+		if(this.getTexto().contains(":")){
+			this.setLabel(this.getTexto().substring(0, this.getTexto().indexOf(':')));
+			this.setTexto(this.getTexto().substring(this.getTexto().indexOf(':') + 1).trim());
+		}
 	}
 }

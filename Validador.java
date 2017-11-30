@@ -2,6 +2,8 @@
 *	@author Marcos Vinicius Sombra
 */
 
+//imports
+import java.util.LinkedList;
 	
 //classe validador
 public class Validador{
@@ -38,6 +40,12 @@ public class Validador{
 
 		return true;
 	}
+
+	//checa se todas as labels são válidas
+	public boolean verificarLabels(LinkedList<Instrucao> intrucoes, LinkedList<Dado> dados){
+		return true;
+	}
+	
 	//retorna o valor numerico do registrador
 	public int getNumReg(String reg){
 		for(int i = 0; i < 32; i++)
