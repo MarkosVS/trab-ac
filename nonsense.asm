@@ -12,3 +12,4 @@ sw		$zero, 	40($s0)
 top: beq		$s0,	$s6,	oi		
 j 		LOOP
 jr 		$zero
+syscall

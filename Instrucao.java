@@ -45,6 +45,10 @@ public class Instrucao{
 		this.texto = txt;
 	}
 
+	private void setTipo(char t){
+		this.tipo = t;
+	}
+
 	//metodos
 	public void corrigirInstrucao(){
 		//checa se possui label
@@ -53,5 +57,8 @@ public class Instrucao{
 			this.setLabel(this.getTexto().substring(0, this.getTexto().indexOf(':')));
 			this.setTexto(this.getTexto().substring(this.getTexto().indexOf(':') + 1).trim());
 		}
+
+		//identifica o tipo da instrução
+		this.setTipo((new Validador()).tipo(this));
 	}
 }

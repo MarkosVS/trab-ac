@@ -29,6 +29,34 @@ public class Validador{
 	final String[] tiposDado = {".asciiz", ".ascii", ".word", ".half", ".byte", ".double", ".float"};
 
 	//métodos
+	//retorna o tipo da instrucao
+	//presume que é uma instrução sintaticamente válida
+	public char tipo(Instrucao inst){
+		//string que guarda a instrução (sem parametros)
+		String i = inst.getTexto().split(" ")[0];
+
+		//checa se é uma chamada ao sistema
+		if(i.equals("syscall"))
+			return 's';
+		
+		//checa se é tipo J
+		for(String s : instTipoJ)
+			if(i.equals(s))
+				return 'J';
+
+		//checa se é tipo R
+		for(String s : instTipoR)
+			if(i.equals(s))
+				return 'R';
+
+		//checa se é tipo I
+		for(String s : instTipoI)
+			if(i.equals(s))
+				return 'I';
+		//retorna o caractere '0' caso não seja uma instrução valida
+		return '0';
+	}
+
 	//checa se a label é válida
 	public boolean labelValida(String lbl){
 		Character c;
