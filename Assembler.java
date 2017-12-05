@@ -16,10 +16,23 @@ public class Assembler{
 	static LinkedList<Instrucao> instrucoes = new LinkedList<Instrucao>();
 	//lista de dados
 	static LinkedList<Dado> dados = new LinkedList<Dado>();
+	//lista de labels
+	static LinkedList<String> labels = new LinkedList<String>();
 	//validador
 	static Validador valid = new Validador();
 	//nome do arquivo
 	static String asm;
+
+	//método que verifica a existência de labels inválidas
+	static boolean verificarLabels(){
+		for(Instrucao i : instrucoes)
+			if(i.getTipo() == 'J'){
+				String jump = i.getTexto().split(" ")[1];
+				//
+			}
+
+		return true;
+	}
 
 	//metodo que gera saida
 	static void gerarArquivo(String nomeSaida) throws FileNotFoundException{
@@ -109,6 +122,9 @@ public class Assembler{
 										Instrucao i = new Instrucao(linha);
 										i.corrigirInstrucao();
 										instrucoes.add(i);
+										//se possuir label, adiciona na lista de labels
+										if(!i.getLabel().equals(""))
+											labels.add(i.getLabel());
 									}
 									else{
 										System.out.println("Instrucao inválida encontrada na linha " + numLinha);
@@ -119,8 +135,11 @@ public class Assembler{
 									//checa se é um dado válido
 									//se for, adiciona na lista
 									//se não for, gera uma mensagem de erro e encerra o programa
-									if(valid.dadoValido(linha))
-										dados.add(new Dado(linha));
+									if(valid.dadoValido(linha)){
+										Dado d = new Dado(linha);
+										d.corrigirDado();
+										dados.add(d);
+									}
 									else{
 										System.out.println("Dado inválido encontrado na linha " + numLinha);
 										System.out.println(linha);
@@ -138,7 +157,7 @@ public class Assembler{
 
 				//buscar erros de labels
 				//caso encontre, exibe mensagem de erro e encerra o programa
-				if(!valid.verificarLabels(instrucoes, dados)){
+				if(!verificarLabels()){
 					System.out.println("Label inválida encontrada");
 					return;
 				}

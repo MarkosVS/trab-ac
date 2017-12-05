@@ -35,4 +35,17 @@ public class Dado{
 	public String getConteudo(){
 		return this.conteudo;
 	}
+
+	//metodos
+	public void corrigirDado(){
+		//variavel que guarda o indice do :
+		int index = this.getConteudo().indexOf(':');
+		//separando a label do resto do conteudo
+		this.label = this.getConteudo().substring(0, index);
+		this.conteudo = this.getConteudo().substring(index + 1).trim();
+		//separando o tipo do resto do conteudo
+		String[] split = this.getConteudo().split(" ");
+		this.tipo = split[0];
+		this.conteudo = split[1];
+	}
 }

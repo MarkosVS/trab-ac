@@ -68,11 +68,6 @@ public class Validador{
 
 		return true;
 	}
-
-	//checa se todas as labels são válidas
-	public boolean verificarLabels(LinkedList<Instrucao> intrucoes, LinkedList<Dado> dados){
-		return true;
-	}
 	
 	//retorna o valor numerico do registrador
 	public int getNumReg(String reg){
