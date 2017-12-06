@@ -22,16 +22,29 @@ public class Assembler{
 	static Validador valid = new Validador();
 	//nome do arquivo
 	static String asm;
-
 	//método que verifica a existência de labels inválidas
 	static boolean verificarLabels(){
-		for(Instrucao i : instrucoes)
+		int lblsEncontradas = 0;
+		int numJumps = 0;
+		//for que percorre a lista de instrucoes
+		for(Instrucao i : instrucoes){
 			if(i.getTipo() == 'J'){
+				//incrementa o contador de jumps
+				numJumps++;
+				//variavel que guarda a label de jump
 				String jump = i.getTexto().split(" ")[1];
-				//
+				//for para comparar o jump com as labels armazenadas
+				for(String lbl : labels)
+					//se encontrar uma label valida, incrementa a variavel que conta e termina esse loop
+					if(lbl.equals(jump)){
+						lblsEncontradas++;
+						break;
+					}
 			}
+		}
 
-		return true;
+		//retorna true se o numero de jumps for igual ao numero de labels. se não, retorna false
+		return lblsEncontradas == numJumps;
 	}
 
 	//metodo que gera saida
