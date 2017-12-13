@@ -20,6 +20,8 @@ public class Assembler{
 	static LinkedList<String> labels = new LinkedList<String>();
 	//validador
 	static Validador valid = new Validador();
+	//conversor para binario
+	static Parser p;
 	//nome do arquivo
 	static String asm;
 	//método que verifica a existência de labels inválidas
@@ -174,6 +176,8 @@ public class Assembler{
 					System.out.println("Label inválida encontrada");
 					return;
 				}
+				//instancia o parser
+				p = new Parser(instrucoes, dados, labels);
 				//escreve o arquivo executavel
 				//PS: por enquanto gera um txt
 				//variavel que guarda o nome do arquivo saída
