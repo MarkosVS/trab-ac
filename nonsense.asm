@@ -13,4 +13,5 @@ top: beq		$s0,	$s6,	oi
 j 		LOOP
 j haha
 jr 		$zero
+sll $s0, $s0, 2
 syscall

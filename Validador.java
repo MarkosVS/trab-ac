@@ -162,12 +162,25 @@ public class Validador{
 					reg2 = getNumReg(r2);
 					if(!existeReg(reg2))
 						return false;
-					//identifica o 3º registrador e armazena
-					//caso seja um registrador inexistente, retorna false
-					r3 = instSplit[3];
-					reg3 = getNumReg(r3);
-					if(!existeReg(reg3))
-						return false;
+
+					if(instSplit[0].equals("sll") || instSplit[0].equals("sll")){
+						//variavel que armazena o valor numerico do imediato
+						int num;
+						//tenta pegar o valor do imediato
+						//retorna false caso não consiga
+						try{
+							num = Integer.parseInt(instSplit[3]);
+						}catch(NumberFormatException e){
+							return false;
+						}
+					}else{
+						//identifica o 3º registrador e armazena
+						//caso seja um registrador inexistente, retorna false
+						r3 = instSplit[3];
+						reg3 = getNumReg(r3);
+						if(!existeReg(reg3))
+							return false;
+					}
 
 				}
 				return true;
