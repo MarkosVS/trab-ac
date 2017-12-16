@@ -50,22 +50,12 @@ public class Assembler{
 	}
 
 	//metodo que gera saida
-	static void gerarArquivo(String nomeSaida) throws FileNotFoundException{
+	static void gerarArquivo(String nomeSaida, LinkedList<String> bin) throws FileNotFoundException{
 		PrintStream ps = new PrintStream(nomeSaida);
-		FileOutputStream out = new FileOutputStream("saida.txt");
-		//teste instruções
-		System.out.println("Instruções:");
-		ps.println("Instruções:");
-		for(Instrucao i : instrucoes){
-			ps.println(i.getTexto());
-			System.out.println(i.getTexto());
-		}
-		//teste dados
-		System.out.println("Dados:");
-		ps.println("Dados:");
-		for(Dado d : dados){
-			ps.println(d.getConteudo());
-			System.out.println(d.getConteudo());
+		//insere no arquivo e mostra na tela
+		for(String b : bin){
+			ps.println(b);
+			System.out.println(b);
 		}
 	}
 
@@ -178,13 +168,15 @@ public class Assembler{
 				}
 				//instancia o parser
 				p = new Parser(instrucoes, dados, labels);
+				//cria uma lista com o binário completo do arquivo
+				LinkedList<String> bin = p.geraBinario();
 				//escreve o arquivo executavel
 				//PS: por enquanto gera um txt
 				//variavel que guarda o nome do arquivo saída
 				String nomeSaida = asm.substring(0, asm.indexOf('.'));
 				nomeSaida += ".txt";
 				//chama metodo que gera o arquivo
-				gerarArquivo(nomeSaida);
+				gerarArquivo(nomeSaida, bin);
 				
 			}catch(FileNotFoundException e){
 				System.out.println("Arquivo não encontrado");

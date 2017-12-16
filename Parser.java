@@ -4,6 +4,7 @@
 
 //imports
 import java.util.LinkedList;
+import java.util.Random;
 
 //classe parser
 public class Parser{
@@ -16,6 +17,10 @@ public class Parser{
 	private LinkedList<String> labels = new LinkedList<String>();
 	//validador
 	private Validador valid = new Validador();
+	//objeto para gerar valores aleatórios
+	private Random jv = new Random();
+	//delimitador
+	private final String delimitador = "11110000111100001111000011110000";
 
 	//construtor
 	public Parser(LinkedList<Instrucao> i, LinkedList<Dado> d, LinkedList<String> l){
@@ -37,7 +42,7 @@ public class Parser{
 		//cria uma lista pra colocar o cabecalho
 		LinkedList<String> cabecalho = new LinkedList<String>();
 		//adicionando linhas
-		cabecalho.add("11110000111100001111000011110000"); 							//delimitador
+		cabecalho.add(delimitador); 												//delimitador
 		cabecalho.add(completaBits(Integer.toBinaryString(dados.size()), 32));		//tamanho da parte de dados
 		cabecalho.add(completaBits(Integer.toBinaryString(instrucoes.size()), 32));	//tamanho da parte de instrucoes
 		return cabecalho;
@@ -47,10 +52,34 @@ public class Parser{
 	public LinkedList<String> geraDados(){
 		//cria uma lista pra colocar os dados
 		LinkedList<String> pDados = new LinkedList<String>();
-		//retorna null se a lista não possuir ao menos um elemento
-		if(dados.size() < 1)
-			return null;
+		//variavel que guarda o endereço do dado
+		String endereco, qtdBytes, dado;
+		//percorre a lista de dados
+		for(Dado d : dados){
+			//gera um endereço aleatório
+			endereco = Integer.toBinaryString(jv.nextInt(1073741824));
+			endereco += "00";
+			endereco = completaBits(endereco, 32);
+			//adiciona o endereço
+			pDados.add(endereco);
+			//checa o tipo de dado e adiciona a qtd de bytes relacionada na lista
+			if(d.getTipo().equals("word") || d.getTipo().equals("half") || d.getTipo().equals("byte")){
+				qtdBytes = completaBits(Integer.toBinaryString(4), 32);
+				dado = completaBits(Integer.toBinaryString(Integer.parseInt(d.getConteudo())), 32);
+			}else if(d.getTipo().equals("ascii") || d.getTipo().equals("asciiz")){
+				qtdBytes = completaBits(Integer.toBinaryString(d.getConteudo().length() * 2), 32);
+				dado = "00000000000000000000000000000000";
+			}else{
+				qtdBytes = "00000000000000000000000000000000";
+				dado = "00000000000000000000000000000000";
+			}
 
+			pDados.add(qtdBytes);
+			pDados.add(dado);
+
+		}
+		//adiciona o delimitador
+		pDados.add(delimitador);
 		//retorna a parte de dados (em binario)
 		return pDados;
 	}
@@ -59,21 +88,18 @@ public class Parser{
 	public LinkedList<String> geraInstrucoes(){
 		//cria uma lista pra colocar as instrucoes
 		LinkedList<String> pInst = new LinkedList<String>();
-		//retorna null se a lista não possuir ao menos um elemento
-		if(instrucoes.size() < 1)
-			return null;
-
 		//variavel string que guarda o binário a ser inserida
-		String bin = "";
+		String bin;
 		//variaveis que guardam os registradores
 		int rd = 0, rs = 0, rt = 0;
 		//percorre a lista de instrucoes para converter
 		for(Instrucao i : instrucoes){
 			String[] instSplit = i.getTexto().split(" ");
+			bin = "";
 			//identifica o tipo da instrução
 			if(i.getTipo() == 'R'){
 				//variaveis para guardar campos
-				String func = "", shift = "";
+				String func = "000000", shift = "00000";
 				//identifica o valor numerico do registrador1
 				int index = instSplit[1].indexOf(',');
 				if(index != -1)
@@ -102,9 +128,19 @@ public class Parser{
 			}else
 				return null;
 		}
+
+		pInst.add(delimitador);
 		//retorna a parte de dados (em binario)
 		return pInst;
 	}
 
+	//metodo que gera o binario completo
+	public LinkedList<String> geraBinario(){
+		LinkedList<String> retorno = new LinkedList<>();
+		retorno.addAll(geraCabecalho());
+		retorno.addAll(geraDados());
+		retorno.addAll(geraInstrucoes());
 
+		return retorno;
+	}
 }
